@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StabilityClient.Net", "StabilityClient.Net\StabilityClient.Net.csproj", "{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

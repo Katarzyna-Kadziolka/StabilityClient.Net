@@ -4,4 +4,7 @@ option csharp_namespace = "StabilityClient.Net";
 
 package api;
 
-import "api-interfaces/src/proto/generation.proto";
+import "generation.proto";
+import "dashboard.proto";
+import "engines.proto";
+import "project.proto";

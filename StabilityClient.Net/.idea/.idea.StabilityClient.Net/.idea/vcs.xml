@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StabilityClient.Net/Protos/api-interfaces" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/StabilityClient.Net/Protos/api-interfaces/src/tensorizer" vcs="Git" />
   </component>
 </project>

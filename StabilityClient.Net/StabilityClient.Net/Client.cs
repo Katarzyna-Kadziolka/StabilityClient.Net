@@ -11,7 +11,7 @@ public class Client  {
     private ProjectService.ProjectServiceClient? _project;
 
     public Client() {
-        _channel = GrpcChannel.ForAddress("https://localhost:7042");
+        _channel = GrpcChannel.ForAddress("https://grpc.stability.ai:443");
     }
 
     public DashboardService.DashboardServiceClient Dashboard => _dashboard ??= new DashboardService.DashboardServiceClient(_channel);

@@ -5,11 +5,18 @@ using Grpc.Net.Client;
 namespace StabilityClient.Net;
 
 public class StabilityClient : IStabilityClient {
-    private readonly GrpcChannel _channel;
-    private DashboardService.DashboardServiceClient? _dashboard;
-    private EnginesService.EnginesServiceClient? _engines;
-    private GenerationService.GenerationServiceClient? _generation;
-    private ProjectService.ProjectServiceClient? _project;
+    private const string ApiKeyVariableName = "STABILITY_KEY";
+    public DashboardService.DashboardServiceClient Dashboard =>
+        _dashboard ??= new DashboardService.DashboardServiceClient(_channel);
+
+    public EnginesService.EnginesServiceClient Engines =>
+        _engines ??= new EnginesService.EnginesServiceClient(_channel);
+
+    public GenerationService.GenerationServiceClient Generation =>
+        _generation ??= new GenerationService.GenerationServiceClient(_channel);
+
+    public ProjectService.ProjectServiceClient Project =>
+        _project ??= new ProjectService.ProjectServiceClient(_channel);
 
     public StabilityClient(string apiKey, string host = "https://grpc.stability.ai:443") {
         var grpcChannelOptions = new GrpcChannelOptions() {
@@ -35,18 +42,11 @@ public class StabilityClient : IStabilityClient {
 
         return apiKey;
     }
+    
+    private readonly GrpcChannel _channel;
 
-    private const string ApiKeyVariableName = "STABILITY_KEY";
-
-    public DashboardService.DashboardServiceClient Dashboard =>
-        _dashboard ??= new DashboardService.DashboardServiceClient(_channel);
-
-    public EnginesService.EnginesServiceClient Engines =>
-        _engines ??= new EnginesService.EnginesServiceClient(_channel);
-
-    public GenerationService.GenerationServiceClient Generation =>
-        _generation ??= new GenerationService.GenerationServiceClient(_channel);
-
-    public ProjectService.ProjectServiceClient Project =>
-        _project ??= new ProjectService.ProjectServiceClient(_channel);
+    private DashboardService.DashboardServiceClient? _dashboard;
+    private EnginesService.EnginesServiceClient? _engines;
+    private GenerationService.GenerationServiceClient? _generation;
+    private ProjectService.ProjectServiceClient? _project;
 }

@@ -4,20 +4,20 @@ using Grpc.Net.Client;
 namespace StabilityClient.Net;
 
 public class Client  {
-    private readonly GrpcChannel channel;
+    private readonly GrpcChannel _channel;
     private DashboardService.DashboardServiceClient? _dashboard;
     private EnginesService.EnginesServiceClient? _engines;
     private GenerationService.GenerationServiceClient? _generation;
     private ProjectService.ProjectServiceClient? _project;
 
     public Client() {
-        channel = GrpcChannel.ForAddress("https://localhost:7042");
+        _channel = GrpcChannel.ForAddress("https://localhost:7042");
     }
 
-    public DashboardService.DashboardServiceClient Dashboard => _dashboard ??= new DashboardService.DashboardServiceClient(channel);
-    public EnginesService.EnginesServiceClient Engines => _engines ??= new EnginesService.EnginesServiceClient(channel);
+    public DashboardService.DashboardServiceClient Dashboard => _dashboard ??= new DashboardService.DashboardServiceClient(_channel);
+    public EnginesService.EnginesServiceClient Engines => _engines ??= new EnginesService.EnginesServiceClient(_channel);
     public GenerationService.GenerationServiceClient Generation =>
-        _generation ??= new GenerationService.GenerationServiceClient(channel);
-    public ProjectService.ProjectServiceClient Project => _project ??= new ProjectService.ProjectServiceClient(channel);
+        _generation ??= new GenerationService.GenerationServiceClient(_channel);
+    public ProjectService.ProjectServiceClient Project => _project ??= new ProjectService.ProjectServiceClient(_channel);
 }
 

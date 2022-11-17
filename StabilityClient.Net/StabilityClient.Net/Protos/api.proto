@@ -1,0 +1,10 @@
+﻿syntax = 'proto3';
+
+option csharp_namespace = "StabilityClient.Net";
+
+package api;
+
+import "generation.proto";
+import "dashboard.proto";
+import "engines.proto";
+import "project.proto";

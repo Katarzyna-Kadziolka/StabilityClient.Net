@@ -4,10 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
-
-        <RootNamespace>TestProject1StabilityClient.Net.Tests.Unit</RootNamespace>
+        <RootNamespace>StabilityClient.Net.Tests.Unit</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +15,10 @@
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
         <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
         <PackageReference Include="coverlet.collector" Version="3.1.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StabilityClient.Net\StabilityClient.Net.csproj" />
     </ItemGroup>
 
 </Project>

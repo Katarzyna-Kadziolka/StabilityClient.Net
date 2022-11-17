@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StabilityClient.Net", "StabilityClient.Net\StabilityClient.Net.csproj", "{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StabilityClient.Net.Tests.Unit", "StabilityClient.Net.Tests.Unit\StabilityClient.Net.Tests.Unit.csproj", "{23A67BFD-D323-430D-8FE1-14CC58B4D2EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F5ABEB5-02DC-436F-A736-0BC23AEA2F33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A67BFD-D323-430D-8FE1-14CC58B4D2EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A67BFD-D323-430D-8FE1-14CC58B4D2EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A67BFD-D323-430D-8FE1-14CC58B4D2EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A67BFD-D323-430D-8FE1-14CC58B4D2EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

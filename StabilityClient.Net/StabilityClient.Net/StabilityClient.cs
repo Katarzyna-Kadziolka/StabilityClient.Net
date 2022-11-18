@@ -31,8 +31,7 @@ public class StabilityClient : IStabilityClient {
         _channel = GrpcChannel.ForAddress(host, grpcChannelOptions);
     }
 
-    public StabilityClient() : this(GetApiKeyFromEnv()) {
-    }
+    public StabilityClient() : this(GetApiKeyFromEnv()) { }
 
     private static string GetApiKeyFromEnv() {
         var apiKey = Environment.GetEnvironmentVariable(ApiKeyVariableName);

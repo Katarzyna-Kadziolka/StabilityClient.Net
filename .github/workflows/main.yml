@@ -25,3 +25,5 @@ jobs:
       run: dotnet restore 
     - name: Build
       run: dotnet build --no-restore
+    - name: Unit Test
+      run: dotnet test --no-build --verbosity normal StabilityClient.Net/StabilityClient.Net.Tests.Unit/StabilityClient.Net.Tests.Unit.csproj

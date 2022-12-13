@@ -5,7 +5,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Protobuf Include="Protos/api.proto" GrpcServices="client" ProtoRoot="Protos" />
         <Protobuf Include="Protos\dashboard.proto" GrpcServices="Client">
             <SourceUrl>https://raw.githubusercontent.com/Stability-AI/api-interfaces/main/src/proto/dashboard.proto</SourceUrl>
         </Protobuf>

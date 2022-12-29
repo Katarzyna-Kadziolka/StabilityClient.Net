@@ -7,7 +7,7 @@
 
 gRPC client for [StabilitySDK](https://github.com/Stability-AI/stability-sdk) written with .Net 6. 
 
--> [Backlog]()
+-> [Changelog](CHANGELOG.md)
 
 ## Features
 - Connect to StabilitySDK using:

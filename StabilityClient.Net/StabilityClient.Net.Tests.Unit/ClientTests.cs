@@ -1,3 +1,5 @@
+using Action = System.Action;
+
 namespace StabilityClient.Net.Tests.Unit;
 
 public class ClientTests {
@@ -13,7 +15,7 @@ public class ClientTests {
         StabilityClient _ = new StabilityClient();
         // Assert
     }
-    
+
     [Test]
     public void Constructor_ApiKey_ShouldCreateChannel() {
         // Arrange
@@ -21,7 +23,7 @@ public class ClientTests {
         StabilityClient stabilityClient = new StabilityClient("test api key");
         // Assert
     }
-    
+
     [Test]
     public void Constructor_Host_ShouldCreateChannel() {
         // Arrange
@@ -29,7 +31,7 @@ public class ClientTests {
         StabilityClient stabilityClient = new StabilityClient("test api key", "https://www.google.pl/");
         // Assert
     }
-    
+
     [Test]
     public void Constructor_EmptyEnvironmentalVariable_ShouldThrowArgumentException() {
         // Arrange
@@ -42,7 +44,7 @@ public class ClientTests {
         act.Should().Throw<ArgumentException>();
         Environment.SetEnvironmentVariable(stabilityKey, apiKey);
     }
-    
+
     [Test]
     public void Constructor_ShouldInitializedDashboard() {
         // Arrange
@@ -51,7 +53,7 @@ public class ClientTests {
         // Assert
         stabilityClient.Dashboard.Should().NotBeNull();
     }
-    
+
     [Test]
     public void Constructor_ShouldInitializedEngines() {
         // Arrange
@@ -60,7 +62,7 @@ public class ClientTests {
         // Assert
         stabilityClient.Engines.Should().NotBeNull();
     }
-    
+
     [Test]
     public void Constructor_ShouldInitializedGeneration() {
         // Arrange
@@ -69,7 +71,7 @@ public class ClientTests {
         // Assert
         stabilityClient.Generation.Should().NotBeNull();
     }
-    
+
     [Test]
     public void Constructor_ShouldInitializedProject() {
         // Arrange

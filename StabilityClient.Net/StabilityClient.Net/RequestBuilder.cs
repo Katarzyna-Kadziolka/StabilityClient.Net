@@ -1,4 +1,3 @@
-using System.Globalization;
 using Gooseai;
 
 namespace StabilityClient.Net;

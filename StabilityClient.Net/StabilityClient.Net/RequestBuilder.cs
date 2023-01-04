@@ -54,7 +54,7 @@ public class RequestBuilder {
     /// <summary>
     ///  Set the number of steps to spend generation (diffusing) image
     /// </summary>
-    /// <param name="steps">expected number of stpes</param>
+    /// <param name="steps">expected number of steps</param>
     /// <returns>RequestBuilder</returns>
     public RequestBuilder SetImageSteps(ulong steps) {
         _request.Image.Steps = steps;

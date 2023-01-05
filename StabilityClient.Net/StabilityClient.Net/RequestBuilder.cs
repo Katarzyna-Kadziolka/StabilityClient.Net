@@ -9,8 +9,8 @@ public class RequestBuilder {
     public const ulong DefaultImageSteps = 30;
     public const ulong DefaultNumberOfSamples = 1;
 
-    
-    private readonly Request _request = new () {
+
+    private readonly Request _request = new() {
         EngineId = DefaultEngineId,
         Image = new ImageParameters {
             Height = DefaultImageHeight,
@@ -19,13 +19,14 @@ public class RequestBuilder {
             Samples = DefaultNumberOfSamples
         }
     };
+
     /// <summary>
     /// Creates a request based on previously specified parameters
     /// </summary>
     /// <returns>Request</returns>
     /// <exception cref="ArgumentException">throw when text prompt is null or empty</exception>
     public Request Build() {
-        if (_request.Prompt.Count==0) {
+        if (_request.Prompt.Count == 0) {
             throw new ArgumentException($"Prompt cannot be empty; Use {nameof(SetTextPrompt)} to add new prompt.");
         }
 
@@ -41,6 +42,7 @@ public class RequestBuilder {
         _request.Image.Height = height;
         return this;
     }
+
     /// <summary>
     /// Set the expected width of the image
     /// </summary>
@@ -50,6 +52,7 @@ public class RequestBuilder {
         _request.Image.Width = width;
         return this;
     }
+
     /// <summary>
     ///  Set the number of steps to spend generation (diffusing) image
     /// </summary>
@@ -59,6 +62,7 @@ public class RequestBuilder {
         _request.Image.Steps = steps;
         return this;
     }
+
     /// <summary>
     /// Sets which engine will take care of image generation 
     /// </summary>
@@ -68,6 +72,7 @@ public class RequestBuilder {
         _request.EngineId = engineId;
         return this;
     }
+
     /// <summary>
     /// Sets the text prompt, based on which the image will be generated.
     /// </summary>
@@ -83,6 +88,7 @@ public class RequestBuilder {
         });
         return this;
     }
+
     /// <summary>
     /// Sets the seed for the random number generator
     /// </summary>
@@ -93,6 +99,7 @@ public class RequestBuilder {
         _request.Image.Seed.Add(seed);
         return this;
     }
+
     /// <summary>
     /// Sets the number of images to generate
     /// </summary>

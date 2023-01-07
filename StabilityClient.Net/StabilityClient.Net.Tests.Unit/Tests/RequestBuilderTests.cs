@@ -1,4 +1,4 @@
-namespace StabilityClient.Net.Tests.Unit;
+namespace StabilityClient.Net.Tests.Unit.Tests;
 
 public class RequestBuilderTests {
     [Test]
@@ -21,7 +21,7 @@ public class RequestBuilderTests {
             .SetTextPrompt(expectedPrompt)
             .Build();
         // Assert
-        request.Prompt.Count.Should().Be(1);
+        request.Prompt.Should().HaveCount(1);
         request.Prompt[0].Text.Should().Be(expectedPrompt);
         request.Prompt[0].Parameters.Init.Should().BeTrue();
     }
@@ -115,7 +115,7 @@ public class RequestBuilderTests {
             .SetImageSeed(expectedImageSeed)
             .Build();
         // Assert
-        request.Image.Seed.Count.Should().Be(1);
+        request.Image.Seed.Should().HaveCount(1);
         request.Image.Seed[0].Should().Be(expectedImageSeed);
     }
 

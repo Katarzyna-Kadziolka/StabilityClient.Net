@@ -22,7 +22,7 @@ public class AsyncServerStreamingCallExtensionsTests {
     [Test]
     public async Task SaveImagesToAsync_OneSample_ShouldReturnTask() {
         // Arrange
-        var response = AsyncServerStreamingCallFactory.Create();
+        var response = AsyncServerStreamingCallFactory.Create(1);
         // Act
         var saveResults = await response.SaveImagesToAsync(DirectoryPath);
         // Assert

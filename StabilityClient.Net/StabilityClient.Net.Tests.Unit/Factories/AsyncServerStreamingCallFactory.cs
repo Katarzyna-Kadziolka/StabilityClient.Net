@@ -6,29 +6,11 @@ using NSubstitute;
 namespace StabilityClient.Net.Tests.Unit.Factories;
 
 public static class AsyncServerStreamingCallFactory {
-    public static AsyncServerStreamingCall<Answer> Create() {
-        var asyncStreamReaderSubstitute = Substitute.For<IAsyncStreamReader<Answer>>();
-        var answers = new List<Answer> {
-            new() {
-                Artifacts = {
-                    new Artifact {
-                        Type = ArtifactType.ArtifactImage,
-                        Binary = ByteString.Empty
-                    }
-                }
-            }
-        };
-        
+    public static AsyncServerStreamingCall<Answer> Create(int numberOfImages) {
+        var answers = CreateAnswers(numberOfImages);
         var enumerator = answers.GetEnumerator();
-        
-        asyncStreamReaderSubstitute
-            .MoveNext(Arg.Any<CancellationToken>())
-            .Returns(_ => Task.FromResult(enumerator.MoveNext()));
-        
-        asyncStreamReaderSubstitute
-            .Current
-            .Returns(_ => enumerator.Current);
-        
+        var asyncStreamReaderSubstitute = CreateAsyncStreamReaderMock(enumerator);
+
         var responseHeadersAsync = (object o) => Task.FromResult(new Metadata());
         var getStatusFunc = (object o) => Status.DefaultSuccess;
         var getTrailersFunc = (object o) => new Metadata();
@@ -36,11 +18,36 @@ public static class AsyncServerStreamingCallFactory {
         object state = new object();
 
         return new AsyncServerStreamingCall<Answer>(
-            asyncStreamReaderSubstitute, 
-            responseHeadersAsync, 
+            asyncStreamReaderSubstitute,
+            responseHeadersAsync,
             getStatusFunc,
-            getTrailersFunc, 
-            disposeAction, 
+            getTrailersFunc,
+            disposeAction,
             state);
+    }
+
+    private static IAsyncStreamReader<Answer> CreateAsyncStreamReaderMock(IEnumerator<Answer> enumerator) {
+        var asyncStreamReaderSubstitute = Substitute.For<IAsyncStreamReader<Answer>>();
+        
+        asyncStreamReaderSubstitute
+            .MoveNext(Arg.Any<CancellationToken>())
+            .Returns(_ => Task.FromResult(enumerator.MoveNext()));
+
+        asyncStreamReaderSubstitute
+            .Current
+            .Returns(_ => enumerator.Current);
+
+        return asyncStreamReaderSubstitute;
+    }
+
+    private static IEnumerable<Answer> CreateAnswers(int numberOfImages) {
+        return Enumerable.Range(0, numberOfImages).Select(_ => new Answer {
+            Artifacts = {
+                new Artifact {
+                    Type = ArtifactType.ArtifactImage,
+                    Binary = ByteString.Empty
+                }
+            }
+        });
     }
 }

@@ -1,3 +1,4 @@
+using Google.Protobuf.Collections;
 using Gooseai;
 using Grpc.Core;
 using StabilityClient.Net.Models;
@@ -12,16 +13,7 @@ public static class AsyncServerStreamingCallExtensions {
         while (await streamReader.MoveNext(token)) {
             var answer = streamReader.Current;
             var tasks = new List<Task>();
-            foreach (var artifact in answer.Artifacts) {
-                if (artifact.Type == ArtifactType.ArtifactImage) {
-                    var content = artifact.Binary.ToByteArray();
-                    var fileName = $"{DateTime.Now:MM-dd-yy HH_mm_ss}-{Guid.NewGuid()}.png";
-                    var path = Path.Combine(Path.GetFullPath(directoryPath), fileName);
-                    var task = File.WriteAllBytesAsync(path, content, token)
-                        .ContinueWith(_ => generateResponseSaveResult.Add(CreateResponse(path)), token);
-                    tasks.Add(task);
-                }
-            }
+            SaveArtifacts(directoryPath, answer.Artifacts, generateResponseSaveResult, tasks, token);
 
             await Task.WhenAll(tasks);
         }
@@ -29,7 +21,26 @@ public static class AsyncServerStreamingCallExtensions {
         return generateResponseSaveResult;
     }
 
-    private static GenerateResponseSaveResult CreateResponse(string path) => new GenerateResponseSaveResult {
+    private static void SaveArtifacts(string directoryPath, RepeatedField<Artifact> artifacts,
+        List<GenerateResponseSaveResult> generateResponseSaveResult, List<Task> tasks, CancellationToken token) {
+        foreach (var artifact in artifacts) {
+            if (artifact.Type == ArtifactType.ArtifactImage) {
+                SaveImage(directoryPath, artifact, generateResponseSaveResult, tasks, token);
+            }
+        }
+    }
+
+    private static void SaveImage(string directoryPath, Artifact artifact,
+        List<GenerateResponseSaveResult> generateResponseSaveResults, List<Task> tasks, CancellationToken token) {
+        var content = artifact.Binary.ToByteArray();
+        var fileName = $"{DateTime.Now:MM-dd-yy HH_mm_ss}-{Guid.NewGuid()}.png";
+        var path = Path.Combine(Path.GetFullPath(directoryPath), fileName);
+        var task = File.WriteAllBytesAsync(path, content, token)
+            .ContinueWith(_ => generateResponseSaveResults.Add(CreateResponse(path)), token);
+        tasks.Add(task);
+    }
+
+    private static GenerateResponseSaveResult CreateResponse(string path) => new() {
         FullPath = path
     };
 }

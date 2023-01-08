@@ -8,6 +8,10 @@ namespace StabilityClient.Net.Extensions;
 public static class AsyncServerStreamingCallExtensions {
     public static async Task<IEnumerable<GenerateResponseSaveResult>> SaveImagesToAsync(
         this AsyncServerStreamingCall<Answer> response, string directoryPath, CancellationToken token = default) {
+        if (string.IsNullOrEmpty(directoryPath)) {
+            throw new ArgumentException(
+                $"Directory path cannot be null or empty, was: {directoryPath}. Change value of {nameof(directoryPath)}.");
+        }
         var streamReader = response.ResponseStream;
         var generateResponseSaveResult = new List<GenerateResponseSaveResult>();
         while (await streamReader.MoveNext(token)) {

@@ -20,52 +20,34 @@ public class AsyncServerStreamingCallExtensionsTests {
     }
     
     [Test]
-    public async Task SaveImagesToAsync_OneSample_ShouldReturnTask() {
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(10)]
+    public async Task SaveImagesToAsync_ShouldReturnResult(int numberOfImages) {
         // Arrange
-        var response = AsyncServerStreamingCallFactory.Create(1);
+        var response = AsyncServerStreamingCallFactory.Create(numberOfImages);
         // Act
         var saveResults = await response.SaveImagesToAsync(DirectoryPath);
         // Assert
         var generateResponseSaveResults = saveResults.ToArray();
-        generateResponseSaveResults.Should().HaveCount(1);
+        generateResponseSaveResults.Should().HaveCount(numberOfImages);
         
         foreach (var saveResult in generateResponseSaveResults) {
-            saveResult.FullPath.Should().Contain(Path.GetFullPath(DirectoryPath));
+            saveResult.FullPath.Should().Contain(Path.GetFullPath(DirectoryPath))
+                .And.EndWith(".png");
         }
     }
-    
+
     [Test]
-    public async Task SaveImagesToAsync_TwoSamples_ShouldReturnTask() {
-        // Arrange
-        var response = AsyncServerStreamingCallFactory.Create(2);
-        // Act
-        var saveResults = await response.SaveImagesToAsync(DirectoryPath);
-        // Assert
-        var generateResponseSaveResults = saveResults.ToArray();
-        generateResponseSaveResults.Should().HaveCount(2);
-        
-        foreach (var saveResult in generateResponseSaveResults) {
-            saveResult.FullPath.Should().Contain(Path.GetFullPath(DirectoryPath));
-        }
-    }
-    
-    [Test]
-    public async Task SaveImagesToAsync_EmptyDirectoryPath_ShouldThrowArgumentError() {
+    [TestCase("")]
+    [TestCase(null)]
+    public async Task SaveImagesToAsync_IncorrectDirectoryPath_ShouldThrowArgumentError(string? path) {
         // Arrange
         var response = AsyncServerStreamingCallFactory.Create(1);
         // Act
-        var saveResultsAction = async () => await response.SaveImagesToAsync(string.Empty);
+        var saveResultsAction = async () => await response.SaveImagesToAsync(path!);
         // Assert
         await saveResultsAction.Should().ThrowAsync<ArgumentException>();
     }
-    
-    [Test]
-    public async Task SaveImagesToAsync_NullDirectoryPath_ShouldThrowArgumentError() {
-        // Arrange
-        var response = AsyncServerStreamingCallFactory.Create(1);
-        // Act
-        var saveResultsAction = async () => await response.SaveImagesToAsync(null);
-        // Assert
-        await saveResultsAction.Should().ThrowAsync<ArgumentException>();
-    }
+
 }

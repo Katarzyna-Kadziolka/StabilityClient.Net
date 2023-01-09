@@ -1,6 +1,6 @@
 using Action = System.Action;
 
-namespace StabilityClient.Net.Tests.Unit;
+namespace StabilityClient.Net.Tests.Unit.Tests;
 
 public class ClientTests {
     [SetUp]
@@ -20,7 +20,7 @@ public class ClientTests {
     public void Constructor_ApiKey_ShouldCreateChannel() {
         // Arrange
         // Act
-        StabilityClient stabilityClient = new StabilityClient("test api key");
+        StabilityClient _ = new StabilityClient("test api key");
         // Assert
     }
 
@@ -28,7 +28,7 @@ public class ClientTests {
     public void Constructor_Host_ShouldCreateChannel() {
         // Arrange
         // Act
-        StabilityClient stabilityClient = new StabilityClient("test api key", "https://www.google.pl/");
+        StabilityClient _ = new StabilityClient("test api key", "https://www.google.pl/");
         // Assert
     }
 
@@ -39,6 +39,7 @@ public class ClientTests {
         var apiKey = Environment.GetEnvironmentVariable(stabilityKey);
         Environment.SetEnvironmentVariable(stabilityKey, "");
         // Act
+        // ReSharper disable once ObjectCreationAsStatement
         Action act = () => new StabilityClient();
         // Assert
         act.Should().Throw<ArgumentException>();

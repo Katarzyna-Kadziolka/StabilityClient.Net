@@ -6,6 +6,14 @@ using StabilityClient.Net.Models;
 namespace StabilityClient.Net.Extensions;
 
 public static class AsyncServerStreamingCallExtensions {
+    /// <summary>
+    /// Save images from response to file in expected directory.
+    /// </summary>
+    /// <param name="response">extended type</param>
+    /// <param name="directoryPath">path to directory where images are expected to save</param>
+    /// <param name="token">cancellation token</param>
+    /// <returns>IEnumerable of GenerateResponseSaveResult with FullPath for all saved files</returns>
+    /// <exception cref="ArgumentException">throw when directory path is null or empty</exception>
     public static async Task<IEnumerable<GenerateResponseSaveResult>> SaveImagesToAsync(
         this AsyncServerStreamingCall<Answer> response, string directoryPath, CancellationToken token = default) {
         if (string.IsNullOrEmpty(directoryPath)) {

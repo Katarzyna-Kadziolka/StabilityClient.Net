@@ -7,22 +7,24 @@
 
 gRPC client for [StabilitySDK](https://github.com/Stability-AI/stability-sdk) written with .Net 6. 
 
--> [Changelog](CHANGELOG.md)
+> [Changelog](CHANGELOG.md)
 
 ## Features
 - Connect to StabilitySDK using:
     - environment variable STABILITY_KEY (default)
     - host (optional)
     - apiKey (optional)
+- RequestBuilder: fluent builder to easily build requests 
+- SaveImagesToAsync: extension method to AsyncServerStreamingCall to easily save images
 
 ## Usage
 
-1. Add Nuget package from [here](https://www.nuget.org/packages/StabilityClient.Net/).
-2. Get your Stability API Key.
+### 1. Add Nuget package from [here](https://www.nuget.org/packages/StabilityClient.Net/).
+### 2. Get your Stability API Key.
 
 > See [here](https://github.com/Stability-AI/stability-sdk) for instruction about how to get **Stability API Key**.
 
-3. Create your client.
+### 3. Create your client.
 
 Recommended:
 ```csharp
@@ -36,7 +38,20 @@ Optional:
 var stability = new StabilityClient("myStabilityApiKey", "myHost");
 ```
 
-4. Create request.
+### 4. Create request.
+
+Using RequestBuilder:
+
+```csharp
+var request = new RequestBuilder()
+    .SetTextPrompt("Chihuahua in sombrero")
+    .SetImageHeight(512)                        // optional
+    .SetImageWidth(512)                         // optional
+    .SetImageSteps(30)                          // optional
+    .SetEngineId("stable-diffusion-512-v2-1")   // optional
+    .Build();
+```
+Raw:
 
 ```csharp
 var request = new Request {
@@ -57,28 +72,38 @@ var request = new Request {
 };
 ```
 
-5. Send request.
+### 5. Send request and save image from response to file.
+
+Using SaveImagesToAsync extension method:
 
 ```csharp
-var response = stabilityClient.Generation.Generate(request).ResponseStream;
+// Send request
+var response = stabilityClient.Generation.Generate(request);
+
+// Save to file
+await response.SaveImagesToAsync("./Images");
 ```
 
-6. Save image from response to file.
+Raw:
 
 ```csharp
+// Send request
+var response = stabilityClient.Generation.Generate(request).ResponseStream;
+
+// Save to file
 var source = new CancellationTokenSource();
 while (await response.MoveNext(source.Token)) {
   var answer = response.Current;
   foreach (var artifact in answer.Artifacts) {
     if (artifact.Type == ArtifactType.ArtifactImage) {
       var content = artifact.Binary.ToByteArray();
-      await File.WriteAllBytesAsync($"C:/Projects/Images/Image.png", content, source.Token);
+      await File.WriteAllBytesAsync("C:/Projects/Images/Image.png", content, source.Token);
     }
   }
 }
 ```
 
-7. Enjoy your image :)
+### 6. Enjoy your image :)
 
 ![29 12 2022 13_40_24-a2089c29-f870-407f-a814-8c5f30796c75](https://user-images.githubusercontent.com/62292047/209964002-65a64d50-72bc-46ee-a3fc-ff4f2294166c.png)
 

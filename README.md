@@ -14,8 +14,8 @@ gRPC client for [StabilitySDK](https://github.com/Stability-AI/stability-sdk) wr
     - environment variable STABILITY_KEY (default)
     - host (optional)
     - apiKey (optional)
-- RequestBuilder: fluent builder to easily build requests 
-- SaveImagesToAsync: extension method to AsyncServerStreamingCall to easily save images
+- ```RequestBuilder```: fluent builder to easily build requests 
+- ```SaveImagesToAsync```: extension method to AsyncServerStreamingCall to easily save images
 
 ## Usage
 
@@ -40,7 +40,7 @@ var stability = new StabilityClient("myStabilityApiKey", "myHost");
 
 ### 4. Create request.
 
-Using RequestBuilder:
+Using ```RequestBuilder```:
 
 ```csharp
 var request = new RequestBuilder()
@@ -74,7 +74,7 @@ var request = new Request {
 
 ### 5. Send request and save image from response to file.
 
-Using SaveImagesToAsync extension method:
+Using ```SaveImagesToAsync``` extension method:
 
 ```csharp
 // Send request

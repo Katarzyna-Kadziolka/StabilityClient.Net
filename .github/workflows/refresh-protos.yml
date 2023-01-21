@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 defaults:
       run:
-        working-directory: ./StabilityClient.Net       
+        working-directory: ./StabilityClient.Net/StabilityClient.Net  
 jobs:
   build:
     runs-on: ubuntu-latest

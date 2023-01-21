@@ -3,7 +3,8 @@ name: Refresh proto files
 on:
   schedule:
     - cron: '0 12 * * *'
-    
+  workflow_dispatch:
+  
 defaults:
       run:
         working-directory: ./StabilityClient.Net

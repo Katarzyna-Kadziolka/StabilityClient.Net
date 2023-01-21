@@ -31,12 +31,12 @@ jobs:
         git diff --name-only -- main develop > changes.txt;
         if [ -s changes.txt ]; then
         echo "There are changes between master and develop branches";
-        git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/OWNER/REPO.git
-        git config --global user.email "ACTION@github.com"
-        git config --global user.name "GitHub Action"
-        git checkout -b develop-update-$(date +"%Y-%m-%d")
-        git add .
-        git commit -m "Update develop branch"
-        git push -u origin-develop develop-update-$(date +"%Y-%m-%d")
-        else
+        git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/OWNER/REPO.git;
+        git config --global user.email "ACTION@github.com";
+        git config --global user.name "GitHub Action";
+        git checkout -b develop-update-$(date +"%Y-%m-%d");
+        git add .;
+        git commit -m "Update develop branch";
+        git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
+        else;
         echo "No changes between master and develop branches";

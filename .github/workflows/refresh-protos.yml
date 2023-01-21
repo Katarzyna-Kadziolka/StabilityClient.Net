@@ -37,6 +37,6 @@ jobs:
         git checkout -b develop-update-$(date +"%Y-%m-%d");
         git add .;
         git commit -m "Update develop branch";
-        git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
+        git push -u origin-develop develop-update-$(date +"%Y-%m-%d")
         else;
         echo "No changes between master and develop branches";

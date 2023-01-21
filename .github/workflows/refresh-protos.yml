@@ -1,14 +1,11 @@
 name: Refresh proto files
-
 on:
   schedule:
     - cron: '0 12 * * *'
   workflow_dispatch:
-  
 defaults:
       run:
-        working-directory: ./StabilityClient.Net
-        
+        working-directory: ./StabilityClient.Net       
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,4 +38,3 @@ jobs:
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d")
         else
         echo "No changes between master and develop branches"
-

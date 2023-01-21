@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-    - uses: actions/checkout@v2 # this action allows to switch between branches
+      uses: actions/checkout@v2 # this action allows to switch between branches
       with:
         ref: develop # the branch you want to check out
     - name: Build project
-    - uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies

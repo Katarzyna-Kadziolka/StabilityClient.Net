@@ -11,33 +11,33 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:        
-- name: Checkout
-  uses: actions/checkout@v2 # this action allows to switch between branches
-  with:
-    ref: develop # the branch you want to check out
-- name: Build project
-  uses: actions/setup-dotnet@v1
+    steps:
+    - name: Checkout
+    - uses: actions/checkout@v2 # this action allows to switch between branches
+      with:
+        ref: develop # the branch you want to check out
+    - name: Build project
+    - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-- name: Restore dependencies
+    - name: Restore dependencies
       run: dotnet restore
-- name: Restore proto files
+    - name: Restore proto files
       run: dotnet-grpc refresh
-- name: Build
+    - name: Build
       run: dotnet build --no-restore
-- name: Check for changes
-  run: |
-    git diff --name-only main develop > changes.txt
-    if [ -s changes.txt ]; then
-      echo "There are changes between master and develop branches"
-      git remote add origin-develop https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/OWNER/REPO.git
-      git config --global user.email "ACTION@github.com"
-      git config --global user.name "GitHub Action"
-      git checkout -b develop-update-$(date +"%Y-%m-%d")
-      git add .
-      git commit -m "Update develop branch"
-      git push -u origin-develop develop-update-$(date +"%Y-%m-%d")
-    else
-      echo "No changes between master and develop branches"
+    - name: Check for changes
+      run: |
+        git diff --name-only main develop > changes.txt
+        if [ -s changes.txt ]; then
+        echo "There are changes between master and develop branches"
+        git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/OWNER/REPO.git
+        git config --global user.email "ACTION@github.com"
+        git config --global user.name "GitHub Action"
+        git checkout -b develop-update-$(date +"%Y-%m-%d")
+        git add .
+        git commit -m "Update develop branch"
+        git push -u origin-develop develop-update-$(date +"%Y-%m-%d")
+        else
+        echo "No changes between master and develop branches"
 

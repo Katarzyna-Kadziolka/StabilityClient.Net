@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Check for changes
       run: |
-        git diff --name-only main develop > changes.txt
+        git diff --name-only -- main develop > changes.txt
         if [ -s changes.txt ]; then
         echo "There are changes between master and develop branches"
         git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/OWNER/REPO.git

@@ -38,6 +38,6 @@ jobs:
         git add .;
         git commit -m "Update develop branch";
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
-        else;
+        else
         echo "No changes between master and develop branches";
         fi;

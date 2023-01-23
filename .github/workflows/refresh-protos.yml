@@ -30,6 +30,7 @@ jobs:
       run: |
         git status --porcelain=v1 > changes.txt;
         if [ -s changes.txt ]; then
+        del changes.txt;
         echo "There are changes between master and develop branches";
         git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/Katarzyna-Kadziolka/StabilityClient.Net.git;
         git config --global user.email "ACTION@github.com";
@@ -39,5 +40,6 @@ jobs:
         git commit -m "Update develop branch";
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
         else
+        del changes.txt;
         echo "No changes between master and develop branches";
         fi;

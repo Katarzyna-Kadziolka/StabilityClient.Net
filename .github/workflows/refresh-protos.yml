@@ -39,7 +39,7 @@ jobs:
         git add .;
         git commit -m "Update develop branch";
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
-        gh pr create -B develop --title "Update proto files" --body;
+        gh pr create -B develop --title "Update proto files" --body Updates;
         git request-pull "Update develop branch" github.com/Katarzyna-Kadziolka/StabilityClient.Net.git;
         else
         rm -f changes.txt;

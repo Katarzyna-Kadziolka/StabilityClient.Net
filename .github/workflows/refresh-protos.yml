@@ -40,8 +40,9 @@ jobs:
         git commit -m "Update develop branch";
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
         gh pr create -B develop --title "Update proto files" --body Updates;
-        git request-pull "Update develop branch" github.com/Katarzyna-Kadziolka/StabilityClient.Net.git;
         else
         rm -f changes.txt;
         echo "No changes between master and develop branches";
         fi;
+      env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}

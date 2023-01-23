@@ -28,16 +28,21 @@ jobs:
       run: dotnet build --no-restore
     - name: Check for changes
       run: |
-        git diff --name-only -- main develop > changes.txt;
+        git status --porcelain=v1 > changes.txt;
         if [ -s changes.txt ]; then
+        rm -f changes.txt;
         echo "There are changes between master and develop branches";
-        git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/OWNER/REPO.git;
+        git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/Katarzyna-Kadziolka/StabilityClient.Net.git;
         git config --global user.email "ACTION@github.com";
         git config --global user.name "GitHub Action";
         git checkout -b develop-update-$(date +"%Y-%m-%d");
         git add .;
         git commit -m "Update develop branch";
         git push -u origin-develop develop-update-$(date +"%Y-%m-%d");
+        gh pr create -B develop --title "Update proto files" --body Updates;
         else
+        rm -f changes.txt;
         echo "No changes between master and develop branches";
         fi;
+      env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}

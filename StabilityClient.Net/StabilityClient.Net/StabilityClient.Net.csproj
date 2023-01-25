@@ -3,22 +3,22 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
     </PropertyGroup>
     <ItemGroup>
-        <Protobuf Include="Protos\dashboard.proto" GrpcServices="Client" ProtoRoot="Protos">
+        <Protobuf Include="Protos/dashboard.proto" GrpcServices="Client" ProtoRoot="Protos">
             <SourceUrl>https://raw.githubusercontent.com/Stability-AI/api-interfaces/main/src/proto/dashboard.proto</SourceUrl>
         </Protobuf>
-        <Protobuf Include="Protos\engines.proto" GrpcServices="Client" ProtoRoot="Protos">
+        <Protobuf Include="Protos/engines.proto" GrpcServices="Client" ProtoRoot="Protos">
             <SourceUrl>https://raw.githubusercontent.com/Stability-AI/api-interfaces/main/src/proto/engines.proto</SourceUrl>
         </Protobuf>
-        <Protobuf Include="Protos\generation.proto" GrpcServices="Client" ProtoRoot="Protos">
+        <Protobuf Include="Protos/generation.proto" GrpcServices="Client" ProtoRoot="Protos">
             <SourceUrl>https://raw.githubusercontent.com/Stability-AI/api-interfaces/main/src/proto/generation.proto</SourceUrl>
         </Protobuf>
-        <Protobuf Include="Protos\project.proto" GrpcServices="Client" ProtoRoot="Protos">
+        <Protobuf Include="Protos/project.proto" GrpcServices="Client" ProtoRoot="Protos">
             <SourceUrl>https://raw.githubusercontent.com/Stability-AI/api-interfaces/main/src/proto/project.proto</SourceUrl>
         </Protobuf>
-        <Protobuf Include="Protos\tensors.proto" GrpcServices="Client" ProtoRoot="Protos">
+        <Protobuf Include="Protos/tensors.proto" GrpcServices="Client" ProtoRoot="Protos">
             <SourceUrl>https://raw.githubusercontent.com/coreweave/tensorizer/fdaed5d2ece40a1aeccf8b396092ce801f5a3910/proto/tensors.proto</SourceUrl>
         </Protobuf>
     </ItemGroup>

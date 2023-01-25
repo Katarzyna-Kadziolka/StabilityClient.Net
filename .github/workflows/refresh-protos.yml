@@ -29,13 +29,10 @@ jobs:
     - name: Check for changes
       run: |
         git status --porcelain=v1 > changes.txt;
-        echo "Error: ${{ env.error }}"
-        grep -v "?? StabilityClient.Net/StabilityClient.Net/changes.txt" changes.txt > changes_filtered.txt
-        echo "Error: ${{ env.error }}"
+        grep -v "?? StabilityClient.Net/StabilityClient.Net/changes.txt" changes.txt > changes_filtered.txt;
         if [ -s changes_filtered.txt ]; then
         rm -f changes.txt;
         rm -f changes_filtered.txt;
-        echo "Error: ${{ env.error }}"
         echo "There are changes between master and develop branches";
         git remote add origin-develop https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/Katarzyna-Kadziolka/StabilityClient.Net.git;
         git config --global user.email "ACTION@github.com";

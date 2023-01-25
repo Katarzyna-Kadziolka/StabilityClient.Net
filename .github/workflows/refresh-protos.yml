@@ -29,6 +29,7 @@ jobs:
     - name: Check for changes
       run: |
         git status --porcelain=v1 > changes.txt;
+        echo "Error: ${{ env.error }}"
         grep -v "?? StabilityClient.Net/StabilityClient.Net/changes.txt" changes.txt > changes_filtered.txt
         echo "Error: ${{ env.error }}"
         if [ -s changes_filtered.txt ]; then

@@ -29,6 +29,7 @@ jobs:
     - name: Check for changes
       run: |
         git status --porcelain=v1 > changes.txt;
+        sed -i '/^\?\?/d' changes.txt;
         if [ -s changes.txt ]; then
         rm -f changes.txt;
         echo "There are changes between master and develop branches";

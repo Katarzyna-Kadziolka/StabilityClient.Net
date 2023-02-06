@@ -1,3 +1,4 @@
+using Google.Protobuf;
 using Gooseai;
 
 namespace StabilityClient.Net;
@@ -27,7 +28,15 @@ public class RequestBuilder {
     /// <exception cref="ArgumentException">throw when text prompt is null or empty</exception>
     public Request Build() {
         if (_request.Prompt.Count == 0) {
-            throw new ArgumentException($"Prompt cannot be empty; Use {nameof(SetTextPrompt)} to add new prompt.");
+            throw new ArgumentException(
+                $"Prompt cannot be empty; Use {nameof(SetTextPrompt)} to add new text prompt or {nameof(SetInitImage)} to add init image.");
+        }
+
+        if (_request.Prompt.Any(a => a.Artifact != null && a.Artifact.Type == ArtifactType.ArtifactMask)) {
+            if (_request.Prompt.All(a => a.Artifact == null || a.Artifact.Type != ArtifactType.ArtifactImage)) {
+                throw new ArgumentException(
+                    $"If mask image is set, init image must also be provided. Use {nameof(SetInitImage)}.");
+            }
         }
 
         return _request;
@@ -77,13 +86,14 @@ public class RequestBuilder {
     /// Sets the text prompt, based on which the image will be generated.
     /// </summary>
     /// <param name="text">expected prompt</param>
+    /// <param name="weight">the importance of a given prompt in the image creation process; a negative value excludes the elements described in the prompt from the image</param>
     /// <returns>RequestBuilder</returns>
-    public RequestBuilder SetTextPrompt(string text) {
-        _request.Prompt.Clear();
+    public RequestBuilder SetTextPrompt(string text, float weight = 1) {
         _request.Prompt.Add(new Prompt {
             Text = text,
             Parameters = new PromptParameters {
-                Init = true
+                Init = true,
+                Weight = weight
             }
         });
         return this;
@@ -107,6 +117,51 @@ public class RequestBuilder {
     /// <returns>RequestBuilder</returns>
     public RequestBuilder SetImageSamples(ulong samples) {
         _request.Image.Samples = samples;
+        return this;
+    }
+
+    /// <summary>
+    /// Set the image used to initialize the generation
+    /// </summary>
+    /// <param name="pathToImage">path pointing to the image</param>
+    /// <param name="weight">the importance of a given image in the image creation process; a negative value excludes elements contained in the init image from the image</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetInitImage(string pathToImage, float weight = 1) {
+        if (string.IsNullOrEmpty(pathToImage)) {
+            throw new ArgumentException(
+                $"Path to image cannot be null or empty, was: {pathToImage}. Change value of {nameof(pathToImage)}.",
+                nameof(pathToImage));
+        }
+        _request.Prompt.Add(new Prompt {
+            Parameters = new PromptParameters {
+                Init = true,
+                Weight = weight
+            },
+            Artifact = new Artifact {
+                Type = ArtifactType.ArtifactImage,
+                Binary = ByteString.FromStream(File.OpenRead(pathToImage))
+            }
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Grayscale mask to exclude diffusion from some pixels
+    /// </summary>
+    /// <param name="pathToImage">path pointing to the image</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetMaskImage(string pathToImage) {
+        if (string.IsNullOrEmpty(pathToImage)) {
+            throw new ArgumentException(
+                $"Path to image cannot be null or empty, was: {pathToImage}. Change value of {nameof(pathToImage)}.",
+                nameof(pathToImage));
+        }
+        _request.Prompt.Add(new Prompt {
+            Artifact = new Artifact {
+                Type = ArtifactType.ArtifactMask,
+                Binary = ByteString.FromStream(File.OpenRead(pathToImage))
+            }
+        });
         return this;
     }
 }

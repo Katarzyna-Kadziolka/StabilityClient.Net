@@ -4,7 +4,7 @@ using Gooseai;
 namespace StabilityClient.Net;
 
 public class RequestBuilder {
-    public const string DefaultEngineId = "stable-diffusion-512-v2-1";
+    public const string DefaultEngineId = "stable-diffusion-v1-5";
     public const ulong DefaultImageHeight = 512;
     public const ulong DefaultImageWidth = 512;
     public const ulong DefaultImageSteps = 30;
@@ -105,7 +105,6 @@ public class RequestBuilder {
     /// <param name="seed">number for random number generator</param>
     /// <returns>RequestBuilder</returns>
     public RequestBuilder SetImageSeed(uint seed) {
-        _request.Image.Seed.Clear();
         _request.Image.Seed.Add(seed);
         return this;
     }
@@ -126,12 +125,14 @@ public class RequestBuilder {
     /// <param name="pathToImage">path pointing to the image</param>
     /// <param name="weight">the importance of a given image in the image creation process; a negative value excludes elements contained in the init image from the image</param>
     /// <returns>RequestBuilder</returns>
+    /// <exception cref="ArgumentException">throw when path to image is null or empty</exception>
     public RequestBuilder SetInitImage(string pathToImage, float weight = 1) {
         if (string.IsNullOrEmpty(pathToImage)) {
             throw new ArgumentException(
                 $"Path to image cannot be null or empty, was: {pathToImage}. Change value of {nameof(pathToImage)}.",
                 nameof(pathToImage));
         }
+
         _request.Prompt.Add(new Prompt {
             Parameters = new PromptParameters {
                 Init = true,
@@ -146,16 +147,18 @@ public class RequestBuilder {
     }
 
     /// <summary>
-    /// Grayscale mask to exclude diffusion from some pixels
+    /// Set grayscale mask to exclude diffusion from some pixels
     /// </summary>
     /// <param name="pathToImage">path pointing to the image</param>
     /// <returns>RequestBuilder</returns>
+    /// <exception cref="ArgumentException">throw when path to image is null or empty</exception>
     public RequestBuilder SetMaskImage(string pathToImage) {
         if (string.IsNullOrEmpty(pathToImage)) {
             throw new ArgumentException(
                 $"Path to image cannot be null or empty, was: {pathToImage}. Change value of {nameof(pathToImage)}.",
                 nameof(pathToImage));
         }
+
         _request.Prompt.Add(new Prompt {
             Artifact = new Artifact {
                 Type = ArtifactType.ArtifactMask,
@@ -163,5 +166,77 @@ public class RequestBuilder {
             }
         });
         return this;
+    }
+
+    /// <summary>
+    /// Set start schedule value to skip a proportion of the start of the diffusion steps, allowing the init image to influence the final generated image
+    /// </summary>
+    /// <param name="startSchedule">lower values will result in more influence from the init image, while higher values will result in more influence from the diffusion steps</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetStartSchedule(float startSchedule) {
+        var stepParameter = GetStepParameter();
+
+        if (stepParameter.Schedule is null) {
+            stepParameter.Schedule = new ScheduleParameters();
+        }
+
+        stepParameter.Schedule.Start = startSchedule;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Set end schedule value to skip a proportion of the end of the diffusion steps, allowing the init image to influence the final generated image 
+    /// </summary>
+    /// <param name="endSchedule">lower values will result in more influence from the init_image, while higher values will result in more influence from the diffusion steps</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetEndSchedule(float endSchedule) {
+        var stepParameter = GetStepParameter();
+
+        if (stepParameter.Schedule is null) {
+            stepParameter.Schedule = new ScheduleParameters();
+        }
+
+        stepParameter.Schedule.End = endSchedule;
+
+        return this;
+    }
+
+    /// <summary>
+    /// Set sampling engine to use
+    /// </summary>
+    /// <param name="sampler">Sampling engine to use</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetSampler(DiffusionSampler sampler) {
+        _request.Image.Transform = new TransformType {
+            Diffusion = sampler
+        };
+        return this;
+    }
+
+    /// <summary>
+    /// Set cfgScale to dictate how closely the engine attempts to match a generation to the provided prompt
+    /// </summary>
+    /// <param name="cfgScale">higher value keep image closer to prompt</param>
+    /// <returns>RequestBuilder</returns>
+    public RequestBuilder SetCfgScale(float cfgScale) {
+        var stepParameter = GetStepParameter();
+
+        if (stepParameter.Sampler is null) {
+            stepParameter.Sampler = new SamplerParameters ();
+        }
+
+        stepParameter.Sampler.CfgScale = cfgScale;
+
+        return this;
+    }
+
+    private StepParameter GetStepParameter() {
+        if (_request.Image.Parameters.Count == 0) {
+            _request.Image.Parameters.Add(new StepParameter());
+        }
+
+        var stepParameter = _request.Image.Parameters[0];
+        return stepParameter;
     }
 }

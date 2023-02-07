@@ -4,7 +4,7 @@ using Gooseai;
 namespace StabilityClient.Net.Tests.Unit.Tests;
 
 public class RequestBuilderTests {
-    private const string pathToTestImage = "./Assets/test.png";
+    private const string PathToTestImage = "./TestAssets/test.png";
 
     [Test]
     public void Build_WithoutSetTextPrompt_ShouldThrowArgumentException() {
@@ -74,7 +74,7 @@ public class RequestBuilderTests {
         // Act
         var act = () => builder
             .SetTextPrompt(expectedPrompt)
-            .SetMaskImage(pathToTestImage)
+            .SetMaskImage(PathToTestImage)
             .Build();
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -157,7 +157,7 @@ public class RequestBuilderTests {
     }
 
     [Test]
-    public async Task SetImageSamples_ShouldSetImageSamples() {
+    public void SetImageSamples_ShouldSetImageSamples() {
         // Arrange
         var expectedPrompt = "Test";
         ulong expectedSamples = 5;
@@ -174,11 +174,11 @@ public class RequestBuilderTests {
     [Test]
     public void SetInitImage_ShouldSetInitImage() {
         // Arrange
-        var expectedBinary = ByteString.FromStream(File.OpenRead(pathToTestImage));
+        var expectedBinary = ByteString.FromStream(File.OpenRead(PathToTestImage));
         var builder = new RequestBuilder();
         // Act
         var request = builder
-            .SetInitImage(pathToTestImage)
+            .SetInitImage(PathToTestImage)
             .Build();
         // Assert
         request.Prompt.Should().HaveCount(1);
@@ -191,12 +191,12 @@ public class RequestBuilderTests {
     [Test]
     public void SetInitImage_Weight_ShouldSetInitImage() {
         // Arrange
-        var expectedBinary = ByteString.FromStream(File.OpenRead(pathToTestImage));
+        var expectedBinary = ByteString.FromStream(File.OpenRead(PathToTestImage));
         var expectedWeight = 2;
         var builder = new RequestBuilder();
         // Act
         var request = builder
-            .SetInitImage(pathToTestImage, expectedWeight)
+            .SetInitImage(PathToTestImage, expectedWeight)
             .Build();
         // Assert
         request.Prompt.Should().HaveCount(1);
@@ -222,13 +222,13 @@ public class RequestBuilderTests {
     public void SetMaskImage_ShouldSetMaskImage() {
         // Arrange
         var expectedPrompt = "Test";
-        var expectedBinary = ByteString.FromStream(File.OpenRead(pathToTestImage));
+        var expectedBinary = ByteString.FromStream(File.OpenRead(PathToTestImage));
         var builder = new RequestBuilder();
         // Act
         var request = builder
             .SetTextPrompt(expectedPrompt)
-            .SetInitImage(pathToTestImage)
-            .SetMaskImage(pathToTestImage)
+            .SetInitImage(PathToTestImage)
+            .SetMaskImage(PathToTestImage)
             .Build();
         // Assert
         request.Prompt.Should().HaveCount(3);
@@ -246,5 +246,61 @@ public class RequestBuilderTests {
         var act = () => builder.SetMaskImage(path!);
         // Assert
         act.Should().Throw<ArgumentException>();
+    }
+    [Test]
+    public void SetStartSchedule_ShouldSetStartSchedule() {
+        // Arrange
+        var expectedPrompt = "Test";
+        var expectedStartSchedule = 0.3f;
+        var builder = new RequestBuilder();
+        // Act
+        var request = builder
+            .SetTextPrompt(expectedPrompt)
+            .SetStartSchedule(expectedStartSchedule)
+            .Build();
+        // Assert
+        request.Image.Parameters[0].Schedule.Start.Should().Be(expectedStartSchedule);
+    }
+    [Test]
+    public void SetEndSchedule_ShouldSetEndSchedule() {
+        // Arrange
+        var expectedPrompt = "Test";
+        var expectedEndSchedule = 0.3f;
+        var builder = new RequestBuilder();
+        // Act
+        var request = builder
+            .SetTextPrompt(expectedPrompt)
+            .SetEndSchedule(expectedEndSchedule)
+            .Build();
+        // Assert
+        request.Image.Parameters[0].Schedule.End.Should().Be(expectedEndSchedule);
+    }
+    [Test]
+    public void SetSampler_ShouldSetSampler() {
+        // Arrange
+        var expectedPrompt = "Test";
+        var expectedSampler = DiffusionSampler.SamplerKDpm2;
+        var builder = new RequestBuilder();
+        // Act
+        var request = builder
+            .SetTextPrompt(expectedPrompt)
+            .SetSampler(expectedSampler)
+            .Build();
+        // Assert
+        request.Image.Transform.Diffusion.Should().Be(expectedSampler);
+    }
+    [Test]
+    public void SetCfgScale_ShouldSetCfgScale() {
+        // Arrange
+        var expectedPrompt = "Test";
+        var expectedCfgScale = 0.3f;
+        var builder = new RequestBuilder();
+        // Act
+        var request = builder
+            .SetTextPrompt(expectedPrompt)
+            .SetCfgScale(expectedCfgScale)
+            .Build();
+        // Assert
+        request.Image.Parameters[0].Sampler.CfgScale.Should().Be(expectedCfgScale);
     }
 }

@@ -16,11 +16,7 @@ public static class AsyncServerStreamingCallExtensions {
     /// <exception cref="ArgumentException">throw when directory path is null or empty</exception>
     public static async Task<IEnumerable<GenerateResponseSaveResult>> SaveImagesToAsync(
         this AsyncServerStreamingCall<Answer> response, string directoryPath, CancellationToken token = default) {
-        if (string.IsNullOrEmpty(directoryPath)) {
-            throw new ArgumentException(
-                $"Directory path cannot be null or empty, was: {directoryPath}. Change value of {nameof(directoryPath)}.",
-                nameof(directoryPath));
-        }
+        ValidatePath(directoryPath);
 
         var streamReader = response.ResponseStream;
         var result = new List<GenerateResponseSaveResult>();
@@ -29,6 +25,26 @@ public static class AsyncServerStreamingCallExtensions {
             var answer = streamReader.Current;
             var saveResult = await SaveArtifacts(directoryPath, answer.Artifacts, token);
             result.AddRange(saveResult);
+        }
+
+        return result;
+    }
+
+    public static async Task<GenerateResponseSaveResult> SaveSingleImageToAsync(
+        this AsyncServerStreamingCall<Answer> response, string directoryPath, string fileName,
+        CancellationToken token = default) {
+        ValidatePath(directoryPath);
+
+        var result = new GenerateResponseSaveResult();
+        var streamReader = response.ResponseStream;
+        while (await streamReader.MoveNext(token)) {
+            var answer = streamReader.Current;
+            foreach (var artifact in answer.Artifacts) {
+                if (artifact.Type == ArtifactType.ArtifactImage) {
+                    result.FullPath = await SaveImage(directoryPath, artifact.Binary.ToByteArray(), token, fileName);
+                    return result;
+                }
+            }
         }
 
         return result;
@@ -51,8 +67,9 @@ public static class AsyncServerStreamingCallExtensions {
         return result;
     }
 
-    private static async Task<string> SaveImage(string directoryPath, byte[] content, CancellationToken token) {
-        var fileName = $"{DateTime.Now:MM-dd-yy_HH-mm-ss}-{Guid.NewGuid()}.png";
+    private static async Task<string> SaveImage(string directoryPath, byte[] content, CancellationToken token,
+        string? fileName = null) {
+        fileName = GetFileName(fileName, directoryPath);
         var fullPath = Path.Combine(Path.GetFullPath(directoryPath), fileName);
 
         await File.WriteAllBytesAsync(fullPath, content, token);
@@ -63,4 +80,25 @@ public static class AsyncServerStreamingCallExtensions {
     private static GenerateResponseSaveResult CreateResponse(string path) => new() {
         FullPath = path
     };
+
+    private static string GetFileName(string? fileName, string directoryPath) {
+        if (fileName is null) {
+            return $"{DateTime.Now:MM-dd-yy_HH-mm-ss}-{Guid.NewGuid()}.png";
+        }
+
+        var fullPath = Path.Combine(Path.GetFullPath(directoryPath), $"{fileName}.png");
+        if (File.Exists(fullPath)) {
+            return $"{fileName}-{Guid.NewGuid()}.png";
+        }
+
+        return $"{fileName}.png";
+    }
+
+    private static void ValidatePath(string path) {
+        if (string.IsNullOrEmpty(path)) {
+            throw new ArgumentException(
+                $"Directory path cannot be null or empty, was: {path}. Change value of {nameof(path)}.",
+                nameof(path));
+        }
+    }
 }

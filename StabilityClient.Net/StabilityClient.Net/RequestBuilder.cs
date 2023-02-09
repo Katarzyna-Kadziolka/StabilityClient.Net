@@ -3,6 +3,9 @@ using Gooseai;
 
 namespace StabilityClient.Net;
 
+/// <summary>
+/// Fluent builder to build request for Stability API
+/// </summary>
 public class RequestBuilder {
     /// <summary>
     /// Default value for inference engine (model) to use

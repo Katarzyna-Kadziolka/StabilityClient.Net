@@ -7,19 +7,19 @@ namespace StabilityClient.Net;
 /// </summary>
 public interface IStabilityClient {
     /// <summary>
-    /// Enabled communication with DashboardService
+    /// Provide communication with DashboardService
     /// </summary>
     public DashboardService.DashboardServiceClient Dashboard { get; }
     /// <summary>
-    /// Enabled communication with EnginesService
+    /// Provide communication with EnginesService
     /// </summary>
     public EnginesService.EnginesServiceClient Engines { get; }
     /// <summary>
-    /// Enabled communication with GenerationService
+    /// Provide communication with GenerationService
     /// </summary>
     public GenerationService.GenerationServiceClient Generation { get; }
     /// <summary>
-    /// Enabled communication with ProjectService
+    /// Provide communication with ProjectService
     /// </summary>
     public ProjectService.ProjectServiceClient Project { get; }
 }

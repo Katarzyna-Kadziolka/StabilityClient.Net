@@ -4,10 +4,25 @@ using Gooseai;
 namespace StabilityClient.Net;
 
 public class RequestBuilder {
+    /// <summary>
+    /// Default value for inference engine (model) to use
+    /// </summary>
     public const string DefaultEngineId = "stable-diffusion-v1-5";
+    /// <summary>
+    /// Default value for image height
+    /// </summary>
     public const ulong DefaultImageHeight = 512;
+    /// <summary>
+    /// Default value for image width
+    /// </summary>
     public const ulong DefaultImageWidth = 512;
+    /// <summary>
+    /// Default value of diffusion steps performed on the requested generation
+    /// </summary>
     public const ulong DefaultImageSteps = 30;
+    /// <summary>
+    /// Default value of number of images to generate
+    /// </summary>
     public const ulong DefaultNumberOfSamples = 1;
 
 

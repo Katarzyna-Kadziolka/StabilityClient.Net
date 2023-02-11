@@ -33,6 +33,15 @@ public static class AsyncServerStreamingCallExtensions {
         return result;
     }
 
+    /// <summary>
+    /// Save single image from response to file with given name in expected directory; if file with such name already exist, guid is added to the file name
+    /// </summary>
+    /// <param name="response">extended type</param>
+    /// <param name="directoryPath">path to directory where image is expected to save</param>
+    /// <param name="fileName">name for the file to saved</param>
+    /// <param name="token">cancellation token</param>
+    /// <returns>GenerateResponseSaveResult with FullPath for saved file</returns>
+    /// <exception cref="ArgumentException">throw when directory path is null or empty</exception>
     public static async Task<GenerateResponseSaveResult> SaveSingleImageToAsync(
         this AsyncServerStreamingCall<Answer> response, string directoryPath, string fileName,
         CancellationToken token = default) {

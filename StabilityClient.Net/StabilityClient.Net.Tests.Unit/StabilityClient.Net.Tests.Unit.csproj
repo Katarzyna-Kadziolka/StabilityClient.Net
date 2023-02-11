@@ -22,4 +22,10 @@
       <ProjectReference Include="..\StabilityClient.Net\StabilityClient.Net.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="TestAssets\test.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

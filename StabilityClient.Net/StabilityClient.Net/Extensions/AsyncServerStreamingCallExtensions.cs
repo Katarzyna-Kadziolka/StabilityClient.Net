@@ -5,6 +5,9 @@ using StabilityClient.Net.Models;
 
 namespace StabilityClient.Net.Extensions;
 
+/// <summary>
+/// Usability utilities to AsyncServerStreamingCall
+/// </summary>
 public static class AsyncServerStreamingCallExtensions {
     /// <summary>
     /// Save images from response to file in expected directory.

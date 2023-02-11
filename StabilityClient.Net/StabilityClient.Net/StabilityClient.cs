@@ -4,18 +4,30 @@ using Grpc.Net.Client;
 
 namespace StabilityClient.Net;
 
+/// <summary>
+/// Client for Stability API
+/// </summary>
 public class StabilityClient : IStabilityClient {
     private const string ApiKeyVariableName = "STABILITY_KEY";
 
+    /// <summary>
+    /// Provide communication with DashboardService
+    /// </summary>
     public DashboardService.DashboardServiceClient Dashboard =>
         _dashboard ??= new DashboardService.DashboardServiceClient(_channel);
-
+    /// <summary>
+    /// Provide communication with EnginesService
+    /// </summary>
     public EnginesService.EnginesServiceClient Engines =>
         _engines ??= new EnginesService.EnginesServiceClient(_channel);
-
+    /// <summary>
+    /// Provide communication with GenerationService
+    /// </summary>
     public GenerationService.GenerationServiceClient Generation =>
         _generation ??= new GenerationService.GenerationServiceClient(_channel);
-
+    /// <summary>
+    /// Provide communication with ProjectService
+    /// </summary>
     public ProjectService.ProjectServiceClient Project =>
         _project ??= new ProjectService.ProjectServiceClient(_channel);
 
